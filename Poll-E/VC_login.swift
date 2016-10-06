@@ -12,6 +12,7 @@ class VC_login: UIViewController {
 
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
+    @IBOutlet weak var txtCode: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,22 +30,25 @@ class VC_login: UIViewController {
         //Authentication
         let username:NSString = txtUsername.text!
         let password:NSString = txtPassword.text!
-        
-        if ( username.isEqualToString("") || password.isEqualToString("") ) {
+        let code:NSString = txtCode.text!
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
             
-            let alertView:UIAlertView = UIAlertView()
+        }
+
+        if ( username.isEqualToString("") || password.isEqualToString("") || code.length == 0) {
+            
+            let alertView:UIAlertController = UIAlertController()
             alertView.title = "Sign in Failed!"
-            alertView.message = "Please enter Username and Password"
-            alertView.delegate = self
-            alertView.addButtonWithTitle("OK")
-            alertView.show()
+            alertView.message = "Please enter Username/Password/Code"
+            alertView.addAction(OKAction)
+            self.presentViewController(alertView, animated: true, completion: nil)
         } else {
             
-            let post:NSString = "username=\(username)&password=\(password)"
+            let post:NSString = "u=\(username)&p=\(password)&c=\(code)"
             
             NSLog("PostData: %@",post);
             
-            let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/FetchUserData.php")!
+            let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/login.php")!
             
             let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             
@@ -82,44 +86,45 @@ class VC_login: UIViewController {
                     
                     //  var error: NSError?
                     
-                    let jsonData:NSArray = (try! NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers )) as! NSArray
+                    let jsonData:NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers )) as! NSDictionary
+                    
+                    
+                    let success:NSInteger = jsonData.valueForKey("success") as! NSInteger
                     
                     let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                    let success:NSString = jsonData[0].valueForKey("username") as! NSString
                     
                     NSLog("Success: %ld", success);
                     
-                    if(success == username)
+                    if(success == 1)
                     {
                         NSLog("Login SUCCESS");
+                        prefs.setValue(1, forKey: "loggedin")
                         
+                        
+                        self.dismissViewControllerAnimated(true, completion: nil)
                         
                     } else {
-                        let alertView:UIAlertView = UIAlertView()
+                        let alertView:UIAlertController = UIAlertController()
                         alertView.title = "Sign in Failed!"
                         alertView.message = "Incorrect User Login Info OR you have not registered yet!"
-                        alertView.delegate = self
-                        alertView.addButtonWithTitle("OK")
-                        alertView.show()
+                        alertView.addAction(OKAction)
+                        self.presentViewController(alertView, animated: true, completion: nil)
                     }
                 } else {
-                    let alertView:UIAlertView = UIAlertView()
+                    let alertView:UIAlertController = UIAlertController()
                     alertView.title = "Sign in Failed!"
                     alertView.message = "Connection Failed"
-                    alertView.delegate = self
-                    alertView.addButtonWithTitle("OK")
-                    alertView.show()
-                }
+                    alertView.addAction(OKAction)
+                    self.presentViewController(alertView, animated: true, completion: nil)                }
             } else {
-                let alertView:UIAlertView = UIAlertView()
+                let alertView:UIAlertController = UIAlertController()
                 alertView.title = "Sign in Failed!"
                 alertView.message = "Connection Failure"
                 if let error = reponseError {
                     alertView.message = (error.localizedDescription)
                 }
-                alertView.delegate = self
-                alertView.addButtonWithTitle("OK")
-                alertView.show()
+                alertView.addAction(OKAction)
+                self.presentViewController(alertView, animated: true, completion: nil)
             }
         }
         

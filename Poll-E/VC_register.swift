@@ -78,12 +78,17 @@ class VC_register: UIViewController {
             alertView.addAction(OKAction)
             self.presentViewController(alertView, animated: true, completion: nil)
         } else {
-            
-            let post:NSString = "username=\(username)&password=\(password)"
+            /*
+            $username = $_POST['username'];
+            $a_code = $_POST['a_code'];
+            $password = $_POST['password'];
+            $pn = $_POST['phone'];
+            */
+            let post:NSString = "username=\(username)&password=\(password)&a_code=\(access)&phone=\(phone)"
             
             NSLog("PostData: %@",post);
             
-            let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/register.php")!
+            let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/signup.php")!
             
             let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             
@@ -133,8 +138,14 @@ class VC_register: UIViewController {
                     if(success == 1)
                     {
                         NSLog("Sign Up SUCCESS");
+                        let alertView:UIAlertController = UIAlertController()
+                        alertView.title = "Account Created!"
+                        alertView.message = "Your account has now been verified!"
+                        alertView.addAction(OKAction)
+                        self.presentViewController(alertView, animated: true, completion: nil)
+                        
                         self.dismissViewControllerAnimated(true, completion: nil)
-                    } else {
+                    } else if(success == 0){
                         var error_msg:NSString
                         
                         if jsonData["error_message"] as? NSString != nil {
@@ -148,6 +159,19 @@ class VC_register: UIViewController {
                         alertView.addAction(OKAction)
                         self.presentViewController(alertView, animated: true, completion: nil)
                         
+                    }else if(success == 2){
+                        let alertView:UIAlertController = UIAlertController()
+                        alertView.title = "Authentication code needed!"
+                        alertView.message = "Records do not show a code sent!"
+                        alertView.addAction(OKAction)
+                        self.presentViewController(alertView, animated: true, completion: nil)
+                    }
+                    else if(success == 3){
+                        let alertView:UIAlertController = UIAlertController()
+                        alertView.title = "Phone number already in use!"
+                        alertView.message = "The number input is already registered!"
+                        alertView.addAction(OKAction)
+                        self.presentViewController(alertView, animated: true, completion: nil)
                     }
                     
                 } else {
