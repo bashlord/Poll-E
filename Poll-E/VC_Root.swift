@@ -25,6 +25,9 @@ class VC_Root: UIViewController {
             if logged == 0{
                 logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
                 self.presentViewController(logpage, animated: true, completion: nil)
+            }else{
+                setup()
+            
             }
         }else{
             prefs.setInteger(0, forKey: "loggedin")
@@ -37,6 +40,10 @@ class VC_Root: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-
+    func setup(){
+        
+    }
+    
+    
 }
 

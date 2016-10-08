@@ -15,6 +15,8 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     var races = ["Please select!", "Asian American","Black/African American", "Native American/Alaska Native",  "Native Hawaiian/Other Pacific Islander", "White American","Other"]
     
     var religions = ["Pick one!","Judaism", "Christianity", "Islam", "Bahá'í", "Hinduism", "Taoism", "Buddhism", "Sikhism", "Wicca", "Kemetism", "Hellenism", "Agnostic", "Other"]
+    var colorsh = ["Red", "Brown", "Black", "Blond", "Grey", "Purple", "Green","Blue","Other"]
+    var colorse = ["Red", "Brown", "Black", "Blond", "Grey", "Purple", "Green","Blue","Other"]
     
     @IBOutlet weak var age_picker: UIPickerView!
     @IBOutlet weak var racepicker: UIPickerView!
@@ -22,6 +24,8 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     @IBOutlet weak var genderpicker: UIPickerView!
     @IBOutlet weak var religionpicker: UIPickerView!
     
+    @IBOutlet weak var h_colorpicker: UIPickerView!
+    @IBOutlet weak var e_colorpicker: UIPickerView!
     
     @IBOutlet weak var heightslider: UISlider!
     @IBOutlet weak var weightslider: UISlider!
@@ -59,6 +63,10 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
             return self.races.count
         }else if pickerView == religionpicker{
             return self.religions.count
+        }else if pickerView == h_colorpicker{
+            return self.colorsh.count
+        }else if pickerView == e_colorpicker{
+            return self.colorse.count
         }else{
             return r_status.count
         }
@@ -73,6 +81,10 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
             return self.races[row]
         }else if pickerView == religionpicker{
             return self.religions[row]
+        }else if pickerView == h_colorpicker{
+            return self.colorsh[row]
+        }else if pickerView == e_colorpicker{
+            return self.colorse[row]
         }else{
             return self.r_status[row]
         }

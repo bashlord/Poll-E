@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1713" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="A4z-f7-awW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1713" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Ne7-2C-mnq">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -195,7 +195,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i9A-0o-DoB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="188" y="27"/>
+            <point key="canvasLocation" x="469" y="16"/>
         </scene>
         <!--User Info-->
         <scene sceneID="qJs-SN-zcT">
@@ -213,7 +213,7 @@
                                 <rect key="frame" x="0.0" y="53" width="414" height="683"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jzI-DV-dbe">
-                                        <rect key="frame" x="0.0" y="15" width="414" height="679"/>
+                                        <rect key="frame" x="0.0" y="15" width="414" height="900"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gender:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Faf-ZT-dNZ">
                                                 <rect key="frame" x="8" y="40" width="74" height="34"/>
@@ -257,6 +257,14 @@
                                                     <outlet property="delegate" destination="A4z-f7-awW" id="QlS-YP-oNE"/>
                                                 </connections>
                                             </pickerView>
+                                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NZL-kd-vk0">
+                                                <rect key="frame" x="143" y="272" width="239" height="101"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="A4z-f7-awW" id="hyD-5a-xDK"/>
+                                                    <outlet property="delegate" destination="A4z-f7-awW" id="xPC-qb-Mf1"/>
+                                                </connections>
+                                            </pickerView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Relationship Status: " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMd-24-7WT">
                                                 <rect key="frame" x="13" y="286" width="116" height="53"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -277,6 +285,11 @@
                                                     <outlet property="delegate" destination="A4z-f7-awW" id="SiC-zK-z6W"/>
                                                 </connections>
                                             </pickerView>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U3J-UY-sEJ">
+                                                <rect key="frame" x="100" y="426" width="97" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Height:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SD9-NK-ouu">
                                                 <rect key="frame" x="8" y="546" width="69" height="32"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -311,12 +324,30 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
-                                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NZL-kd-vk0">
-                                                <rect key="frame" x="143" y="272" width="239" height="101"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Eye Color:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tOH-IC-ASX">
+                                                <rect key="frame" x="13" y="725" width="84" height="31"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="us4-s5-473">
+                                                <rect key="frame" x="292" y="641" width="104" height="185"/>
                                                 <connections>
-                                                    <outlet property="dataSource" destination="A4z-f7-awW" id="hyD-5a-xDK"/>
-                                                    <outlet property="delegate" destination="A4z-f7-awW" id="xPC-qb-Mf1"/>
+                                                    <outlet property="dataSource" destination="A4z-f7-awW" id="d4b-5u-cjt"/>
+                                                    <outlet property="delegate" destination="A4z-f7-awW" id="OZ5-z7-Rr7"/>
+                                                </connections>
+                                            </pickerView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hair Color:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="If0-2X-gdF">
+                                                <rect key="frame" x="205" y="725" width="101" height="36"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Sr-kM-Xc9">
+                                                <rect key="frame" x="105" y="657" width="92" height="169"/>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="A4z-f7-awW" id="Kqu-Gb-9LF"/>
+                                                    <outlet property="delegate" destination="A4z-f7-awW" id="yzl-UO-gmX"/>
                                                 </connections>
                                             </pickerView>
                                         </subviews>
@@ -364,7 +395,9 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
                         <outlet property="age_picker" destination="XLK-hY-PCC" id="6ck-w7-0q7"/>
+                        <outlet property="e_colorpicker" destination="3Sr-kM-Xc9" id="rUw-9D-9LR"/>
                         <outlet property="genderpicker" destination="Gfz-Hs-52I" id="YFc-4k-goe"/>
+                        <outlet property="h_colorpicker" destination="us4-s5-473" id="aQd-LB-W1s"/>
                         <outlet property="heightslider" destination="GeK-to-aiU" id="Bwk-l2-YNo"/>
                         <outlet property="racepicker" destination="l82-9C-TQb" id="YRe-UZ-hFb"/>
                         <outlet property="relationshippicker" destination="NZL-kd-vk0" id="b5j-gl-Xgp"/>
