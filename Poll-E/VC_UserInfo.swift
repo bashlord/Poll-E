@@ -106,6 +106,11 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     
+    
+    @IBAction func onBackPressed(sender: UIButton) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     func populate(){
         if(self.ages.count == 0){
             for(var i = 1; i < 120; i++){
@@ -113,6 +118,7 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
             }
         }
     }
+    
     
     
 }
