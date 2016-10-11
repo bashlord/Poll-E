@@ -15,6 +15,7 @@ class VC_Root: UIViewController {
     var logpage:VC_login!
     var uinfo:VC_UserInfo!
     var settings:VC_Settings!
+    var pollflag = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,29 +28,7 @@ class VC_Root: UIViewController {
                 logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
                 self.presentViewController(logpage, animated: true, completion: nil)
             }else{
-                if let set = prefs.integerForKey("set") as? Int{
-                    if set == 1{
-                        if let checkid = prefs.integerForKey("id") as? Int{
-                            if checkid < 0{
-                                 prefs.setInteger(0, forKey: "loggedin")
-                                logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
-                                self.presentViewController(logpage, animated: true, completion: nil)
-                            }
-                        }else{
-                             prefs.setInteger(0, forKey: "loggedin")
-                            logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
-                            self.presentViewController(logpage, animated: true, completion: nil)
-                        }
-                    }else{
-                        setup()
-                        prefs.setInteger(1, forKey: "set")
-                    }
-                }else{
-                    setup()
-                    prefs.setInteger(1, forKey: "set")
-                }
-                
-            
+                setup()
             }
         }else{
             prefs.setInteger(0, forKey: "loggedin")
@@ -63,9 +42,6 @@ class VC_Root: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    
-    
-    
     @IBAction func on_UserInfo(sender: UIButton) {
         self.uinfo = self.storyboard?.instantiateViewControllerWithIdentifier("uinfo") as? VC_UserInfo
         self.presentViewController(self.uinfo, animated: true, completion: nil)
