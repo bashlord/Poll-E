@@ -14,7 +14,7 @@ class VC_Root: UIViewController {
     //prefs.setObject(NSDate(), forKey: name)
     var logpage:VC_login!
     var uinfo:VC_UserInfo!
-    
+    var settings:VC_Settings!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,10 +27,19 @@ class VC_Root: UIViewController {
                 logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
                 self.presentViewController(logpage, animated: true, completion: nil)
             }else{
-                
                 if let set = prefs.integerForKey("set") as? Int{
                     if set == 1{
-                    
+                        if let checkid = prefs.integerForKey("id") as? Int{
+                            if checkid < 0{
+                                 prefs.setInteger(0, forKey: "loggedin")
+                                logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
+                                self.presentViewController(logpage, animated: true, completion: nil)
+                            }
+                        }else{
+                             prefs.setInteger(0, forKey: "loggedin")
+                            logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
+                            self.presentViewController(logpage, animated: true, completion: nil)
+                        }
                     }else{
                         setup()
                         prefs.setInteger(1, forKey: "set")
@@ -44,6 +53,7 @@ class VC_Root: UIViewController {
             }
         }else{
             prefs.setInteger(0, forKey: "loggedin")
+            logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
             self.presentViewController(logpage, animated: true, completion: nil)
         }
     }
@@ -63,145 +73,156 @@ class VC_Root: UIViewController {
     }
     
     
+    @IBAction func onSettings(sender: UIButton) {
+        self.settings = self.storyboard?.instantiateViewControllerWithIdentifier("settings") as? VC_Settings
+        self.presentViewController(self.settings, animated: true, completion: nil)
+        
+    }
+    
     func setup(){
         let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
             
         }
-        let id = prefs.valueForKey("id") as! Int
-        print(id)
-        let post:NSString = "id=\(id)"
-        
-        NSLog("PostData: %@",post);
-        
-        let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/onlogged.php")!
-        
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
-        
-        let postLength:NSString = String( postData.length )
-        
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
-        request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        
-        
-        var reponseError: NSError?
-        var response: NSURLResponse?
-        
-        var urlData: NSData?
-        do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
-        } catch let error as NSError {
-            reponseError = error
-            urlData = nil
-        }
-        
-        if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
+        var id = -1
+        if let iid = prefs.valueForKey("id") as? Int{
+            id = iid
+            print(id)
+            let post:NSString = "id=\(id)"
             
-            NSLog("Response code: %ld", res.statusCode);
+            NSLog("PostData: %@",post);
             
-            if (res.statusCode >= 200 && res.statusCode < 300)
-            {
-                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
+            let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/onlogged.php")!
+            
+            let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
+            
+            let postLength:NSString = String( postData.length )
+            
+            let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
+            request.HTTPMethod = "POST"
+            request.HTTPBody = postData
+            request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            
+            
+            var reponseError: NSError?
+            var response: NSURLResponse?
+            
+            var urlData: NSData?
+            do {
+                urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
+            } catch let error as NSError {
+                reponseError = error
+                urlData = nil
+            }
+            
+            if ( urlData != nil ) {
+                let res = response as! NSHTTPURLResponse!;
                 
-                NSLog("Response ==> %@", responseData);
+                NSLog("Response code: %ld", res.statusCode);
                 
-                //  var error: NSError?
-                
-                let jsonData:NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers )) as! NSDictionary
-                
-                
-                let success:NSInteger = jsonData.valueForKey("success") as! NSInteger
-                
-                let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                
-                NSLog("Success: %ld", success);
-                
-                if(success == 1)
+                if (res.statusCode >= 200 && res.statusCode < 300)
                 {
-                    NSLog("Login SUCCESS");
-                    prefs.setValue(1, forKey: "loggedin")
-                    if let p1 = jsonData.valueForKey("p1") as? Float{
-                        prefs.setValue(p1, forKey: "w")
-                    }else{
-                        prefs.setValue(-1, forKey: "w")
+                    let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
+                    
+                    NSLog("Response ==> %@", responseData);
+                    
+                    //  var error: NSError?
+                    
+                    let jsonData:NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers )) as! NSDictionary
+                    
+                    
+                    let success:NSInteger = jsonData.valueForKey("success") as! NSInteger
+                    
+                    let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                    
+                    NSLog("Success: %ld", success);
+                    
+                    if(success == 1)
+                    {
+                        NSLog("Login SUCCESS");
+                        prefs.setValue(1, forKey: "loggedin")
+                        if let p1 = jsonData.valueForKey("p1") as? Float{
+                            prefs.setValue(p1, forKey: "w")
+                        }else{
+                            prefs.setValue(-1, forKey: "w")
+                        }
+                        if let p2 = jsonData.valueForKey("p2") as? Int{
+                            prefs.setValue(p2, forKey: "age")
+                        }else{
+                            prefs.setValue(-1, forKey: "age")
+                        }
+                        
+                        if let p3 = jsonData.valueForKey("p3") as? Int{
+                            prefs.setValue(p3, forKey: "hair")
+                        }else{
+                            prefs.setValue(-1, forKey: "hair")
+                        }
+                        
+                        if let p1 = jsonData.valueForKey("p4") as? Float{
+                            prefs.setValue(p1, forKey: "h")
+                        }else{
+                            prefs.setValue(-1, forKey: "h")
+                        }
+                        
+                        if let p1 = jsonData.valueForKey("p5") as? Int{
+                            prefs.setValue(p1, forKey: "gen")
+                        }else{
+                            prefs.setValue(-1, forKey: "gen")
+                        }
+                        
+                        if let p1 = jsonData.valueForKey("p6") as? Int{
+                            prefs.setValue(p1, forKey: "eth")
+                        }else{
+                            prefs.setValue(-1, forKey: "eth")
+                        }
+                        
+                        if let p1 = jsonData.valueForKey("p7") as? Int{prefs.setValue(p1, forKey: "eye")
+                        }else{
+                            prefs.setValue(-1, forKey: "eye")
+                        }
+                        
+                        if let p1 = jsonData.valueForKey("p8") as? Int{prefs.setValue(p1, forKey: "r")
+                        }else{
+                            prefs.setValue(-1, forKey: "r")
+                        }
+                        
+                        if let p1 = jsonData.valueForKey("p9") as? Int{prefs.setValue(p1, forKey: "rel")
+                        }else{
+                            prefs.setValue(-1, forKey: "rel")
+                        }
+                        
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                        
+                    } else {
+                        let alertView:UIAlertController = UIAlertController()
+                        alertView.title = "Sign in Failed!"
+                        alertView.message = "Incorrect User Login Info OR you have not registered yet!"
+                        alertView.addAction(OKAction)
+                        self.presentViewController(alertView, animated: true, completion: nil)
                     }
-                    if let p2 = jsonData.valueForKey("p2") as? Int{
-                        prefs.setValue(p2, forKey: "age")
-                    }else{
-                        prefs.setValue(-1, forKey: "age")
-                    }
-                    
-                    if let p3 = jsonData.valueForKey("p3") as? Int{
-                        prefs.setValue(p3, forKey: "hair")
-                    }else{
-                        prefs.setValue(-1, forKey: "hair")
-                    }
-                    
-                    if let p1 = jsonData.valueForKey("p4") as? Float{
-                        prefs.setValue(p1, forKey: "h")
-                    }else{
-                        prefs.setValue(-1, forKey: "h")
-                    }
-                    
-                    if let p1 = jsonData.valueForKey("p5") as? Int{
-                        prefs.setValue(p1, forKey: "gen")
-                    }else{
-                        prefs.setValue(-1, forKey: "gen")
-                    }
-                    
-                    if let p1 = jsonData.valueForKey("p6") as? Int{
-                        prefs.setValue(p1, forKey: "eth")
-                    }else{
-                        prefs.setValue(-1, forKey: "eth")
-                    }
-                    
-                    if let p1 = jsonData.valueForKey("p7") as? Int{prefs.setValue(p1, forKey: "eye")
-                    }else{
-                        prefs.setValue(-1, forKey: "eye")
-                    }
-                    
-                    if let p1 = jsonData.valueForKey("p8") as? Int{prefs.setValue(p1, forKey: "r")
-                    }else{
-                        prefs.setValue(-1, forKey: "r")
-                    }
-                    
-                    if let p1 = jsonData.valueForKey("p9") as? Int{prefs.setValue(p1, forKey: "rel")
-                    }else{
-                        prefs.setValue(-1, forKey: "rel")
-                    }
-                    
-                    
-                    
-                    
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                    
                 } else {
                     let alertView:UIAlertController = UIAlertController()
                     alertView.title = "Sign in Failed!"
-                    alertView.message = "Incorrect User Login Info OR you have not registered yet!"
+                    alertView.message = "Connection Failed"
                     alertView.addAction(OKAction)
-                    self.presentViewController(alertView, animated: true, completion: nil)
-                }
+                    self.presentViewController(alertView, animated: true, completion: nil)                }
             } else {
                 let alertView:UIAlertController = UIAlertController()
                 alertView.title = "Sign in Failed!"
-                alertView.message = "Connection Failed"
+                alertView.message = "Connection Failure"
+                if let error = reponseError {
+                    alertView.message = (error.localizedDescription)
+                }
                 alertView.addAction(OKAction)
-                self.presentViewController(alertView, animated: true, completion: nil)                }
-        } else {
-            let alertView:UIAlertController = UIAlertController()
-            alertView.title = "Sign in Failed!"
-            alertView.message = "Connection Failure"
-            if let error = reponseError {
-                alertView.message = (error.localizedDescription)
+                self.presentViewController(alertView, animated: true, completion: nil)
             }
-            alertView.addAction(OKAction)
-            self.presentViewController(alertView, animated: true, completion: nil)
+        }else{
+            logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
+            self.presentViewController(logpage, animated: true, completion: nil)
+
         }
+        
     }
     
 }

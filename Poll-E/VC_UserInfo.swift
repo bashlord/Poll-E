@@ -17,7 +17,7 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     var religions = ["Pick one!","Judaism", "Christianity", "Islam", "Bahá'í", "Hinduism", "Taoism", "Buddhism", "Sikhism", "Wicca", "Kemetism", "Hellenism", "Agnostic", "Other"]
     var colorsh = ["Red", "Brown", "Black", "Blond", "Grey", "Purple", "Green","Blue","Other"]
     var colorse = ["Red", "Brown", "Black", "Blond", "Grey", "Purple", "Green","Blue","Other"]
-    
+    let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
     @IBOutlet weak var age_picker: UIPickerView!
     @IBOutlet weak var racepicker: UIPickerView!
     @IBOutlet weak var relationshippicker: UIPickerView!
@@ -32,6 +32,18 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     
     @IBOutlet weak var txtheight: UITextField!
     @IBOutlet weak var txtweight: UITextField!
+    var p11:Float = -1
+    var p2 = -1
+    var p3 = -1
+    var p4:Float = -1.0
+    var p5 = -1
+    var p6 = -1
+    var p7 = -1
+    var p8 = -1
+    var p9 = -1
+    var count = 0
+
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +54,63 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         populate()
+        
+        
+        if let p1 = prefs.valueForKey("w") as? Float{
+            p11 = p1
+            weightslider.setValue(p1, animated: true)
+            if p1 == 300{
+                self.txtweight.text = String(p1)+"+"
+            }else{
+                self.txtweight.text = String(round(p1))+" lbs"
+            }
+        }
+        if let p1 = prefs.valueForKey("age") as? Int{
+            p2 = p1
+            age_picker.viewForRow(p1, forComponent: 0)
+        }
+        
+        if let p1 = prefs.valueForKey("hair") as? Int{
+            p3 = p1
+            h_colorpicker.viewForRow(p1, forComponent: 0)
+        }
+        
+        if let p1 = prefs.valueForKey("h") as? Float{
+            p4 = p1
+            heightslider.setValue(p1, animated: true)
+            if p1 == 300{
+                self.txtheight.text = String(p1)+"+"
+            }else{
+                self.txtheight.text = String(round(p1))+" lbs"
+            }
+        }
+        
+        if let p1 = prefs.valueForKey("gen") as? Int{
+            p5 = p1
+            genderpicker.viewForRow(p1, forComponent: 0)
+
+        }
+        
+        if let p1 = prefs.valueForKey("eth") as? Int{
+            p6 = p1
+            racepicker.viewForRow(p1, forComponent: 0)
+
+        }
+        
+        if let p1 = prefs.valueForKey("eye") as? Int{
+            p7 = p1
+            e_colorpicker.viewForRow(p1, forComponent: 0)
+        }
+        
+        if let p1 = prefs.valueForKey("r") as? Int{
+            p8 = p1
+            religionpicker.viewForRow(p1, forComponent: 0)
+        }
+        
+        if let p1 = prefs.valueForKey("rel") as? Int{
+            p9 = p1
+            relationshippicker.viewForRow(p1, forComponent: 0)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -108,7 +177,124 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     
     
     @IBAction func onBackPressed(sender: UIButton) {
+        let i = prefs.integerForKey("id")
+        let postp = update_binfo(i)
+        if count > 0{
+            query_binfo(postp)
+        }
+        
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func update_binfo(id:Int) -> String{
+        var retstring:String = "id=\(id)"
+        if(p11 != -1 && p11 != self.weightslider.value){
+            retstring += "&p1=\(p11)"
+            count += 1
+        }
+        if(p2 != -1 && p2 != self.age_picker.selectedRowInComponent(0)){
+            retstring += "&p2=\(p2)"
+            count += 1
+        }
+        if(p3 != -1 && p3 != self.h_colorpicker.selectedRowInComponent(0)){
+            retstring += "&p3=\(p3)"
+            count += 1
+        }
+        if(p4 != -1 && p4 != self.heightslider.value){
+            retstring += "&p4=\(p4)"
+            count += 1
+        }
+        if(p5 != -1 && p5 != self.h_colorpicker.selectedRowInComponent(0)){
+            retstring += "&p5=\(p5)"
+            count += 1
+        }
+        if(p6 != -1 && p6 != self.h_colorpicker.selectedRowInComponent(0)){
+            retstring += "&p6=\(p6)"
+            count += 1
+        }
+        if(p7 != -1 && p7 != self.h_colorpicker.selectedRowInComponent(0)){
+            retstring += "&p7=\(p7)"
+            count += 1
+        }
+        if(p8 != -1 && p8 != self.h_colorpicker.selectedRowInComponent(0)){
+            retstring += "&p8=\(p8)"
+            count += 1
+        }
+        if(p9 != -1 && p9 != self.h_colorpicker.selectedRowInComponent(0)){
+            retstring += "&p9=\(p9)"
+            count += 1
+        }
+        
+        return retstring
+    }
+    
+    func query_binfo(postp:String){
+        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+            
+        }
+
+        let post = postp as NSString
+        NSLog("PostData: %@",post);
+
+        let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/update_binfo.php")!
+        
+        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
+        
+        let postLength:NSString = String( postData.length )
+        
+        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.HTTPBody = postData
+        request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        
+        var reponseError: NSError?
+        var response: NSURLResponse?
+        
+        var urlData: NSData?
+        do {
+            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
+        } catch let error as NSError {
+            reponseError = error
+            urlData = nil
+        }
+        
+        if ( urlData != nil ) {
+            let res = response as! NSHTTPURLResponse!;
+            
+            NSLog("Response code: %ld", res.statusCode);
+            
+            if (res.statusCode >= 200 && res.statusCode < 300)
+            {
+                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
+                
+                NSLog("Response ==> %@", responseData);
+                
+                //  var error: NSError?
+                
+                let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                
+                prefs.removePersistentDomainForName("com.bashlord.Poll-E")
+                self.dismissViewControllerAnimated(true, completion: nil)
+                
+            } else {
+                let alertView:UIAlertController = UIAlertController()
+                alertView.title = "Sign in Failed!"
+                alertView.message = "Connection Failed"
+                alertView.addAction(OKAction)
+                self.presentViewController(alertView, animated: true, completion: nil)                }
+        }else {
+            let alertView:UIAlertController = UIAlertController()
+            alertView.title = "Sign in Failed!"
+            alertView.message = "Connection Failure"
+            if let error = reponseError {
+                alertView.message = (error.localizedDescription)
+            }
+            alertView.addAction(OKAction)
+            self.presentViewController(alertView, animated: true, completion: nil)
+        }
     }
     
     func populate(){

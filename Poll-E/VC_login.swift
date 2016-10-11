@@ -99,56 +99,56 @@ class VC_login: UIViewController {
                     {
                         NSLog("Login SUCCESS");
                         prefs.setValue(1, forKey: "loggedin")
-                        if let p1 = jsonData.valueForKey("p1"){
+                        prefs.setValue(jsonData.valueForKey("id") as! Int , forKey: "id")
+                        if let p1 = jsonData.valueForKey("p1") as? Float{
                             prefs.setValue(p1, forKey: "w")
                         }else{
                             prefs.setValue(-1, forKey: "w")
                         }
-                        if let p2 = jsonData.valueForKey("p2"){
+                        if let p2 = jsonData.valueForKey("p2") as? Int{
                             prefs.setValue(p2, forKey: "age")
                         }else{
                             prefs.setValue(-1, forKey: "age")
                         }
 
-                        if let p3 = jsonData.valueForKey("p3"){
+                        if let p3 = jsonData.valueForKey("p3") as? Int{
                             prefs.setValue(p3, forKey: "hair")
                         }else{
                             prefs.setValue(-1, forKey: "hair")
                         }
 
-                        if let p1 = jsonData.valueForKey("p4"){
+                        if let p1 = jsonData.valueForKey("p4") as? Float{
                             prefs.setValue(p1, forKey: "h")
                         }else{
                             prefs.setValue(-1, forKey: "h")
                         }
 
-                        if let p1 = jsonData.valueForKey("p5"){
+                        if let p1 = jsonData.valueForKey("p5") as? Int{
                             prefs.setValue(p1, forKey: "gen")
                         }else{
                             prefs.setValue(-1, forKey: "gen")
                         }
 
-                        if let p1 = jsonData.valueForKey("p6"){
+                        if let p1 = jsonData.valueForKey("p6") as? Int{
                             prefs.setValue(p1, forKey: "eth")
                         }else{
                             prefs.setValue(-1, forKey: "eth")
                         }
 
-                        if let p1 = jsonData.valueForKey("p7"){prefs.setValue(p1, forKey: "eye")
+                        if let p1 = jsonData.valueForKey("p7") as? Int{prefs.setValue(p1, forKey: "eye")
                         }else{
                             prefs.setValue(-1, forKey: "eye")
                         }
 
-                        if let p1 = jsonData.valueForKey("p8"){prefs.setValue(p1, forKey: "r")
+                        if let p1 = jsonData.valueForKey("p8") as? Int{prefs.setValue(p1, forKey: "r")
                         }else{
                             prefs.setValue(-1, forKey: "r")
                         }
 
-                        if let p1 = jsonData.valueForKey("p9"){prefs.setValue(p1, forKey: "rel")
+                        if let p1 = jsonData.valueForKey("p9") as? Int{prefs.setValue(p1, forKey: "rel")
                         }else{
                             prefs.setValue(-1, forKey: "rel")
                         }
-
                         
                         
                         
