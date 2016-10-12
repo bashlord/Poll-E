@@ -16,8 +16,20 @@ class VC_Root: UIViewController {
     var uinfo:VC_UserInfo!
     var settings:VC_Settings!
     var pollflag = 0
+    
+    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var containerView: UIView!
+    
+    var pollpageviewer: PVC_PollViews? {
+        didSet {
+            //pollpageviewer?.pvc_delegate = self
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
     }
     
@@ -25,12 +37,20 @@ class VC_Root: UIViewController {
         super.viewDidAppear(animated)
         if let logged = prefs.integerForKey("loggedin") as? Int{
             if logged == 0{
+                //user is not logged in
                 logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
                 self.presentViewController(logpage, animated: true, completion: nil)
             }else{
+                //HERE IS WHERE A SUCCESSFUL LOGIN/LOGGED IN HAPPENS
                 setup()
+                pollpageviewer = self.storyboard?.instantiateViewControllerWithIdentifier("PVC_PollViews") as! PVC_PollViews
+                
+                self.view.addSubview((pollpageviewer?.view)!)
+                self.view.sendSubviewToBack((pollpageviewer?.view)!)
+                
             }
         }else{
+            //user has not logged in
             prefs.setInteger(0, forKey: "loggedin")
             logpage = self.storyboard?.instantiateViewControllerWithIdentifier("login")  as? VC_login
             self.presentViewController(logpage, animated: true, completion: nil)
@@ -54,6 +74,16 @@ class VC_Root: UIViewController {
         self.presentViewController(self.settings, animated: true, completion: nil)
         
     }
+    
+    
+    @IBAction func onNext(sender: UIButton) {
+        self.pollpageviewer?.scrollToNextViewController()
+    }
+    
+    @IBAction func onPrev(sender: UIButton) {
+        self.pollpageviewer?.scrollToPrevViewController()
+    }
+    
     
     func setup(){
         let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
@@ -168,7 +198,33 @@ class VC_Root: UIViewController {
                             prefs.setValue(-1, forKey: "rel")
                         }
                         
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        let qs:NSArray = jsonData.valueForKey("qs") as! NSArray
+                        let ans:NSArray = jsonData.valueForKey("ans") as! NSArray
+                        
+                        var anscount = 0
+                        for(var i = 0; i < qs.count; i++){
+                            let qid = qs[i].valueForKey("id") as! Int
+                            let q = qs[i].valueForKey("que") as! String
+                            let qt = string_to_date(qs[i].valueForKey("t") as! String)
+                            
+                            var p = -1
+                            if anscount < ans.count{
+                                p = ans[anscount].valueForKey("qid") as! Int
+                            }
+                            
+                            let tpoll = Poll( q: q,id: qid, d: qt)
+                            if qid == p{
+                                tpoll.resp = ans[anscount].valueForKey("r") as! Int
+                                tpoll.rtime = string_to_date(ans[anscount].valueForKey("t") as! String)
+                                (UIApplication.sharedApplication().delegate as! AppDelegate).answered.append(i)
+                                anscount++
+                            }
+                            else{
+                                (UIApplication.sharedApplication().delegate as! AppDelegate).unanswered.append(i)
+                            }
+                            
+                            (UIApplication.sharedApplication().delegate as! AppDelegate).Q[i] = tpoll
+                        }
                         
                     } else {
                         let alertView:UIAlertController = UIAlertController()
@@ -201,8 +257,12 @@ class VC_Root: UIViewController {
         
     }
     
+    func string_to_date(time:String) -> NSDate{
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "YYYY-dd-MM hh:mm:ss"
+        let dateString = formatter.dateFromString(time)
+        
+        return dateString!
+    }
 }
-
-
-
 
