@@ -180,7 +180,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Previous"/>
                                 <connections>
-                                    <action selector="onPrev:" destination="Ne7-2C-mnq" eventType="touchUpInside" id="Bc6-uJ-ykQ"/>
+                                    <action selector="onPrev:" destination="Ne7-2C-mnq" eventType="touchUpInside" id="1J8-0t-zKd"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6DZ-Dg-WY4">
@@ -188,7 +188,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="Next"/>
                                 <connections>
-                                    <action selector="onNext:" destination="Ne7-2C-mnq" eventType="touchUpInside" id="WQu-Kc-5hh"/>
+                                    <action selector="onNext:" destination="Ne7-2C-mnq" eventType="touchUpInside" id="yOG-Hf-BAa"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bPb-vr-Z4L">
@@ -600,6 +600,9 @@
                                         <integer key="value" value="25"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onNo:" destination="ey8-Em-V10" eventType="touchUpInside" id="ova-xG-bZ1"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIM-Zy-X1Y">
                                 <rect key="frame" x="13" y="77" width="381" height="309"/>
@@ -618,6 +621,9 @@
                                         <integer key="value" value="25"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="onYes:" destination="ey8-Em-V10" eventType="touchUpInside" id="xVZ-ul-Px1"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

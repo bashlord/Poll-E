@@ -30,6 +30,8 @@ class VC_Root: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        pollpageviewer = self.storyboard?.instantiateViewControllerWithIdentifier("PVC_PollViews") as! PVC_PollViews
+        
         
     }
     
@@ -42,9 +44,8 @@ class VC_Root: UIViewController {
                 self.presentViewController(logpage, animated: true, completion: nil)
             }else{
                 //HERE IS WHERE A SUCCESSFUL LOGIN/LOGGED IN HAPPENS
-                setup()
-                pollpageviewer = self.storyboard?.instantiateViewControllerWithIdentifier("PVC_PollViews") as! PVC_PollViews
                 
+                setup()
                 self.view.addSubview((pollpageviewer?.view)!)
                 self.view.sendSubviewToBack((pollpageviewer?.view)!)
                 
@@ -259,7 +260,8 @@ class VC_Root: UIViewController {
     
     func string_to_date(time:String) -> NSDate{
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "YYYY-dd-MM hh:mm:ss"
+        formatter.dateFormat = "yyyy-MM-DD HH:mm:ss"
+        //formatter.locale = NSLocale.currentLocale()
         let dateString = formatter.dateFromString(time)
         
         return dateString!
