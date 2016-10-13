@@ -20,8 +20,9 @@ class PVC_PollViews: UIPageViewController {
     //holds indexes of answered/unanswered polls
     var curr_a = 0
     var curr_una = 0
-    
     var curr_all = 0
+    
+    var emptyVC:VC_Text!
     
     //filter flag
     // 0 = show all
@@ -31,6 +32,7 @@ class PVC_PollViews: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        emptyVC = self.storyboard?.instantiateViewControllerWithIdentifier("emptyVC") as! VC_Text
 
     }
     
@@ -38,8 +40,7 @@ class PVC_PollViews: UIPageViewController {
         super.viewDidAppear(animated)
         dataSource = self
         delegate = self
-        print("answered count: " + String(self.answered.count))
-        print("unanswered count: " + String(self.unanswered.count))
+
         if self.answered.count != (UIApplication.sharedApplication().delegate as! AppDelegate).answered.count{
             self.answered.removeAll()
             self.answered.appendContentsOf((UIApplication.sharedApplication().delegate as! AppDelegate).answered)
@@ -178,6 +179,32 @@ class PVC_PollViews: UIPageViewController {
                 }
             }
         }
+    
+    func togglePVC(flag: Int){
+        if unansweredflag == 0{
+            if (UIApplication.sharedApplication().delegate as! AppDelegate).Q.count > 0{
+                scrollToViewControllerp(VC_Q(curr_all), direction: .Forward)
+            }else{
+                emptyVC.msg = "No more questions :("
+                scrollToViewControllerp(emptyVC, direction: .Forward)
+            }
+        }else if unansweredflag == 1{
+            if unanswered.count > 0{
+                scrollToViewControllerp(VC_Q(curr_una), direction: .Forward)
+            }else{
+                emptyVC.msg = "No more unanswered questions :("
+                scrollToViewControllerp(emptyVC, direction: .Forward)
+            }
+        }else{
+            if answered.count > 0{
+                scrollToViewControllerp(VC_Q(curr_a), direction: .Forward)
+            }else{
+                emptyVC.msg = "No more answered questions :("
+                scrollToViewControllerp(emptyVC, direction: .Forward)
+            }
+        }
+    
+    }
     
     private func VC_Q(index:Int) -> VC_Question {
         let ret = (self.storyboard?.instantiateViewControllerWithIdentifier("a_poll"))! as! VC_Question

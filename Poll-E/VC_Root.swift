@@ -16,6 +16,7 @@ class VC_Root: UIViewController {
     var uinfo:VC_UserInfo!
     var settings:VC_Settings!
     var pollflag = 0
+    @IBOutlet weak var segcontrol: UISegmentedControl!
     
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var containerView: UIView!
@@ -84,6 +85,30 @@ class VC_Root: UIViewController {
     @IBAction func onPrev(sender: UIButton) {
         self.pollpageviewer?.scrollToPrevViewController()
     }
+    @IBAction func onSegmentChange(sender: UISegmentedControl) {
+        switch segcontrol.selectedSegmentIndex
+        {
+        case 0:
+            if self.pollpageviewer?.unansweredflag != 0{
+                self.pollpageviewer?.unansweredflag = 0
+                self.pollpageviewer?.togglePVC(0)
+            }
+        case 1:
+            if self.pollpageviewer?.unansweredflag != 1{
+                self.pollpageviewer?.unansweredflag = 1
+                 self.pollpageviewer?.togglePVC(1)
+            }
+        case 2:
+            if self.pollpageviewer?.unansweredflag != 2{
+                self.pollpageviewer?.unansweredflag = 2
+                 self.pollpageviewer?.togglePVC(2)
+            }
+        default:
+            break; 
+        }
+    }
+    
+    
     
     
     func setup(){
