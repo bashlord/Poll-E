@@ -123,7 +123,7 @@ class VC_Root: UIViewController {
             
             NSLog("PostData: %@",post);
             
-            let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/onlogged.php")!
+            let url:NSURL = NSURL(string: base+root)!
             
             let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             
@@ -244,8 +244,7 @@ class VC_Root: UIViewController {
                                 tpoll.rtime = string_to_date(ans[anscount].valueForKey("t") as! String)
                                 (UIApplication.sharedApplication().delegate as! AppDelegate).answered.append(i)
                                 anscount++
-                            }
-                            else{
+                            }else{
                                 (UIApplication.sharedApplication().delegate as! AppDelegate).unanswered.append(i)
                             }
                             

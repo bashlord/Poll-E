@@ -48,7 +48,7 @@ class VC_login: UIViewController {
             
             NSLog("PostData: %@",post);
             
-            let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/login.php")!
+            let url:NSURL = NSURL(string: base+log)!
             
             let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
             

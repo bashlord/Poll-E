@@ -55,7 +55,7 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
         super.viewDidAppear(animated)
         populate()
         
-        
+        print("fjnwelwnelkvm")
         if let p1 = prefs.valueForKey("w") as? Float{
             p11 = p1
             weightslider.setValue(p1, animated: true)
@@ -67,12 +67,12 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
         }
         if let p1 = prefs.valueForKey("age") as? Int{
             p2 = p1
-            age_picker.viewForRow(p1, forComponent: 0)
+            age_picker.selectRow(p1, inComponent: 0, animated: true)
         }
         
         if let p1 = prefs.valueForKey("hair") as? Int{
             p3 = p1
-            h_colorpicker.viewForRow(p1, forComponent: 0)
+            h_colorpicker.selectRow(p1, inComponent: 0, animated: true)
         }
         
         if let p1 = prefs.valueForKey("h") as? Float{
@@ -87,29 +87,29 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
         
         if let p1 = prefs.valueForKey("gen") as? Int{
             p5 = p1
-            genderpicker.viewForRow(p1, forComponent: 0)
+            genderpicker.selectRow(p1, inComponent: 0, animated: true)
 
         }
         
         if let p1 = prefs.valueForKey("eth") as? Int{
             p6 = p1
-            racepicker.viewForRow(p1, forComponent: 0)
+            racepicker.selectRow(p1, inComponent: 0, animated: true)
 
         }
         
         if let p1 = prefs.valueForKey("eye") as? Int{
             p7 = p1
-            e_colorpicker.viewForRow(p1, forComponent: 0)
+            e_colorpicker.selectRow(p1, inComponent: 0, animated: true)
         }
         
         if let p1 = prefs.valueForKey("r") as? Int{
             p8 = p1
-            religionpicker.viewForRow(p1, forComponent: 0)
+            religionpicker.selectRow(p1, inComponent: 0, animated: true)
         }
         
         if let p1 = prefs.valueForKey("rel") as? Int{
             p9 = p1
-            relationshippicker.viewForRow(p1, forComponent: 0)
+            relationshippicker.selectRow(p1, inComponent: 0, animated: true)
         }
     }
 
@@ -188,43 +188,52 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     
     func update_binfo(id:Int) -> String{
         var retstring:String = "id=\(id)"
-        if(p11 != -1 && p11 != self.weightslider.value){
-            retstring += "&p1=\(p11)"
+        if( p11 != self.weightslider.value){
+            retstring += "&p1=\(self.weightslider.value)"
             count += 1
+            prefs.setFloat(self.weightslider.value, forKey: "w")
         }
-        if(p2 != -1 && p2 != self.age_picker.selectedRowInComponent(0)){
-            retstring += "&p2=\(p2)"
+        if(p2 != self.age_picker.selectedRowInComponent(0)){
+            retstring += "&p2=\(self.age_picker.selectedRowInComponent(0))"
             count += 1
+            prefs.setInteger(self.age_picker.selectedRowInComponent(0), forKey: "age")
         }
-        if(p3 != -1 && p3 != self.h_colorpicker.selectedRowInComponent(0)){
-            retstring += "&p3=\(p3)"
+        if( p3 != self.h_colorpicker.selectedRowInComponent(0)){
+            retstring += "&p3=\(self.h_colorpicker.selectedRowInComponent(0))"
             count += 1
+            prefs.setInteger(self.h_colorpicker.selectedRowInComponent(0), forKey: "hair")
         }
-        if(p4 != -1 && p4 != self.heightslider.value){
-            retstring += "&p4=\(p4)"
+        if( p4 != self.heightslider.value){
+            retstring += "&p4=\(self.heightslider.value)"
             count += 1
+            prefs.setFloat(self.heightslider.value, forKey: "h")
         }
-        if(p5 != -1 && p5 != self.h_colorpicker.selectedRowInComponent(0)){
-            retstring += "&p5=\(p5)"
+        if( p5 != self.genderpicker.selectedRowInComponent(0)){
+            retstring += "&p5=\(self.genderpicker.selectedRowInComponent(0))"
             count += 1
+            prefs.setInteger(self.genderpicker.selectedRowInComponent(0), forKey: "gen")
         }
-        if(p6 != -1 && p6 != self.h_colorpicker.selectedRowInComponent(0)){
-            retstring += "&p6=\(p6)"
+        if(p6 != self.racepicker.selectedRowInComponent(0)){
+            retstring += "&p6=\(self.racepicker.selectedRowInComponent(0))"
             count += 1
+            prefs.setInteger(self.racepicker.selectedRowInComponent(0), forKey: "eth")
         }
-        if(p7 != -1 && p7 != self.h_colorpicker.selectedRowInComponent(0)){
-            retstring += "&p7=\(p7)"
+        if(p7 != self.e_colorpicker.selectedRowInComponent(0)){
+            retstring += "&p7=\(self.e_colorpicker.selectedRowInComponent(0))"
             count += 1
+            prefs.setInteger(self.e_colorpicker.selectedRowInComponent(0), forKey: "eye")
         }
-        if(p8 != -1 && p8 != self.h_colorpicker.selectedRowInComponent(0)){
-            retstring += "&p8=\(p8)"
+        if(p8 != self.relationshippicker.selectedRowInComponent(0)){
+            retstring += "&p8=\(self.relationshippicker.selectedRowInComponent(0))"
             count += 1
+            prefs.setInteger(self.relationshippicker.selectedRowInComponent(0), forKey: "r")
         }
-        if(p9 != -1 && p9 != self.h_colorpicker.selectedRowInComponent(0)){
-            retstring += "&p9=\(p9)"
+        if(p9 != self.religionpicker.selectedRowInComponent(0)){
+            retstring += "&p9=\(self.religionpicker.selectedRowInComponent(0))"
             count += 1
+            prefs.setInteger(self.religionpicker.selectedRowInComponent(0), forKey: "rel")
         }
-        
+
         return retstring
     }
     
@@ -235,8 +244,9 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
 
         let post = postp as NSString
         NSLog("PostData: %@",post);
+        print(post)
 
-        let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/update_binfo.php")!
+        let url:NSURL = NSURL(string: base+uinfo)!
         
         let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
         
@@ -272,12 +282,6 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
                 
                 NSLog("Response ==> %@", responseData);
                 
-                //  var error: NSError?
-                
-                let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-                
-                prefs.removePersistentDomainForName("com.bashlord.Poll-E")
-                self.dismissViewControllerAnimated(true, completion: nil)
                 
             } else {
                 let alertView:UIAlertController = UIAlertController()

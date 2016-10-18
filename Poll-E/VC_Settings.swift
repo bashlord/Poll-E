@@ -88,7 +88,7 @@ class VC_Settings: UIViewController, UITextViewDelegate{
         let id = prefs.integerForKey("id")
         let post:NSString = "p=\(sugg)&i=\(id)"
         NSLog("PostData: %@",post);
-        let url:NSURL = NSURL(string: "http://www.jjkbashlord.com/poll/set_poll.php")!
+        let url:NSURL = NSURL(string: base+setting)!
         let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
         let postLength:NSString = String( postData.length )
         let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
@@ -119,13 +119,22 @@ class VC_Settings: UIViewController, UITextViewDelegate{
                 
                 NSLog("Response ==> %@", responseData);
                 
+                if(id == 1){
+                    let jsonData:NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(urlData!, options:NSJSONReadingOptions.MutableContainers )) as! NSDictionary
+                    
+                    
+                    let fin:NSInteger = jsonData.valueForKey("fin") as! NSInteger
+                    
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).Q[fin] = Poll( q: sugg,id: fin,d: NSDate())
+                    (UIApplication.sharedApplication().delegate as! AppDelegate).unanswered.append(fin)
+                    
+                }
+                
                 txtSuggest.text = "Place a suggestion for a poll!"
                 txtSuggest.textColor = UIColor.lightGrayColor()
                 
                 txtSuggest.selectedTextRange = txtSuggest.textRangeFromPosition(txtSuggest.beginningOfDocument, toPosition: txtSuggest.beginningOfDocument)
-                if(id == 1){
-                
-                }
+               
                 
             } else {
                 let alertView:UIAlertController = UIAlertController()
