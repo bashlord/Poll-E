@@ -17,7 +17,7 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     var religions = ["Pick one!","Judaism", "Christianity", "Islam", "Bahá'í", "Hinduism", "Taoism", "Buddhism", "Sikhism", "Wicca", "Kemetism", "Hellenism", "Agnostic", "Other"]
     var colorsh = ["Red", "Brown", "Black", "Blond", "Grey", "Purple", "Green","Blue","Other"]
     var colorse = ["Red", "Brown", "Black", "Blond", "Grey", "Purple", "Green","Blue","Other"]
-    let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    let prefs:UserDefaults = UserDefaults.standard
     @IBOutlet weak var age_picker: UIPickerView!
     @IBOutlet weak var racepicker: UIPickerView!
     @IBOutlet weak var relationshippicker: UIPickerView!
@@ -51,12 +51,12 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         populate()
         
         print("fjnwelwnelkvm")
-        if let p1 = prefs.valueForKey("w") as? Float{
+        if let p1 = prefs.value(forKey: "w") as? Float{
             p11 = p1
             weightslider.setValue(p1, animated: true)
             if p1 == 300{
@@ -65,17 +65,17 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
                 self.txtweight.text = String(round(p1))+" lbs"
             }
         }
-        if let p1 = prefs.valueForKey("age") as? Int{
+        if let p1 = prefs.value(forKey: "age") as? Int{
             p2 = p1
             age_picker.selectRow(p1, inComponent: 0, animated: true)
         }
         
-        if let p1 = prefs.valueForKey("hair") as? Int{
+        if let p1 = prefs.value(forKey: "hair") as? Int{
             p3 = p1
             h_colorpicker.selectRow(p1, inComponent: 0, animated: true)
         }
         
-        if let p1 = prefs.valueForKey("h") as? Float{
+        if let p1 = prefs.value(forKey: "h") as? Float{
             p4 = p1
             heightslider.setValue(p1, animated: true)
             if p1 == 300{
@@ -85,29 +85,29 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
             }
         }
         
-        if let p1 = prefs.valueForKey("gen") as? Int{
+        if let p1 = prefs.value(forKey: "gen") as? Int{
             p5 = p1
             genderpicker.selectRow(p1, inComponent: 0, animated: true)
 
         }
         
-        if let p1 = prefs.valueForKey("eth") as? Int{
+        if let p1 = prefs.value(forKey: "eth") as? Int{
             p6 = p1
             racepicker.selectRow(p1, inComponent: 0, animated: true)
 
         }
         
-        if let p1 = prefs.valueForKey("eye") as? Int{
+        if let p1 = prefs.value(forKey: "eye") as? Int{
             p7 = p1
             e_colorpicker.selectRow(p1, inComponent: 0, animated: true)
         }
         
-        if let p1 = prefs.valueForKey("r") as? Int{
+        if let p1 = prefs.value(forKey: "r") as? Int{
             p8 = p1
             religionpicker.selectRow(p1, inComponent: 0, animated: true)
         }
         
-        if let p1 = prefs.valueForKey("rel") as? Int{
+        if let p1 = prefs.value(forKey: "rel") as? Int{
             p9 = p1
             relationshippicker.selectRow(p1, inComponent: 0, animated: true)
         }
@@ -118,11 +118,11 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
         // Dispose of any resources that can be recreated.
     }
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         
         if pickerView == age_picker{
             return self.ages.count
@@ -141,7 +141,7 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
         }
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
         if pickerView == age_picker{
             return String(self.ages[row])
         }else if pickerView == self.genderpicker{
@@ -160,13 +160,13 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     }
     
     
-    @IBAction func heightslide(sender: UISlider) {
+    @IBAction func heightslide(_ sender: UISlider) {
         let ft = Int(sender.value/12)
-        let inch = Int(sender.value%12)
+        let inch = Int(sender.value.truncatingRemainder(dividingBy: 12))
         self.txtheight.text = String(ft)+"'"+String(inch)+"\""
     }
     
-    @IBAction func weightslide(sender: UISlider) {
+    @IBAction func weightslide(_ sender: UISlider) {
         if sender.value == 300{
             self.txtweight.text = String(sender.value)+"+"
         }else{
@@ -176,69 +176,69 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
     
     
     
-    @IBAction func onBackPressed(sender: UIButton) {
-        let i = prefs.integerForKey("id")
+    @IBAction func onBackPressed(_ sender: UIButton) {
+        let i = prefs.integer(forKey: "id")
         let postp = update_binfo(i)
         if count > 0{
             query_binfo(postp)
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    func update_binfo(id:Int) -> String{
+    func update_binfo(_ id:Int) -> String{
         var retstring:String = "id=\(id)"
         if( p11 != self.weightslider.value){
             retstring += "&p1=\(self.weightslider.value)"
             count += 1
-            prefs.setFloat(self.weightslider.value, forKey: "w")
+            prefs.set(self.weightslider.value, forKey: "w")
         }
-        if(p2 != self.age_picker.selectedRowInComponent(0)){
-            retstring += "&p2=\(self.age_picker.selectedRowInComponent(0))"
+        if(p2 != self.age_picker.selectedRow(inComponent: 0)){
+            retstring += "&p2=\(self.age_picker.selectedRow(inComponent: 0))"
             count += 1
-            prefs.setInteger(self.age_picker.selectedRowInComponent(0), forKey: "age")
+            prefs.set(self.age_picker.selectedRow(inComponent: 0), forKey: "age")
         }
-        if( p3 != self.h_colorpicker.selectedRowInComponent(0)){
-            retstring += "&p3=\(self.h_colorpicker.selectedRowInComponent(0))"
+        if( p3 != self.h_colorpicker.selectedRow(inComponent: 0)){
+            retstring += "&p3=\(self.h_colorpicker.selectedRow(inComponent: 0))"
             count += 1
-            prefs.setInteger(self.h_colorpicker.selectedRowInComponent(0), forKey: "hair")
+            prefs.set(self.h_colorpicker.selectedRow(inComponent: 0), forKey: "hair")
         }
         if( p4 != self.heightslider.value){
             retstring += "&p4=\(self.heightslider.value)"
             count += 1
-            prefs.setFloat(self.heightslider.value, forKey: "h")
+            prefs.set(self.heightslider.value, forKey: "h")
         }
-        if( p5 != self.genderpicker.selectedRowInComponent(0)){
-            retstring += "&p5=\(self.genderpicker.selectedRowInComponent(0))"
+        if( p5 != self.genderpicker.selectedRow(inComponent: 0)){
+            retstring += "&p5=\(self.genderpicker.selectedRow(inComponent: 0))"
             count += 1
-            prefs.setInteger(self.genderpicker.selectedRowInComponent(0), forKey: "gen")
+            prefs.set(self.genderpicker.selectedRow(inComponent: 0), forKey: "gen")
         }
-        if(p6 != self.racepicker.selectedRowInComponent(0)){
-            retstring += "&p6=\(self.racepicker.selectedRowInComponent(0))"
+        if(p6 != self.racepicker.selectedRow(inComponent: 0)){
+            retstring += "&p6=\(self.racepicker.selectedRow(inComponent: 0))"
             count += 1
-            prefs.setInteger(self.racepicker.selectedRowInComponent(0), forKey: "eth")
+            prefs.set(self.racepicker.selectedRow(inComponent: 0), forKey: "eth")
         }
-        if(p7 != self.e_colorpicker.selectedRowInComponent(0)){
-            retstring += "&p7=\(self.e_colorpicker.selectedRowInComponent(0))"
+        if(p7 != self.e_colorpicker.selectedRow(inComponent: 0)){
+            retstring += "&p7=\(self.e_colorpicker.selectedRow(inComponent: 0))"
             count += 1
-            prefs.setInteger(self.e_colorpicker.selectedRowInComponent(0), forKey: "eye")
+            prefs.set(self.e_colorpicker.selectedRow(inComponent: 0), forKey: "eye")
         }
-        if(p8 != self.relationshippicker.selectedRowInComponent(0)){
-            retstring += "&p8=\(self.relationshippicker.selectedRowInComponent(0))"
+        if(p8 != self.relationshippicker.selectedRow(inComponent: 0)){
+            retstring += "&p8=\(self.relationshippicker.selectedRow(inComponent: 0))"
             count += 1
-            prefs.setInteger(self.relationshippicker.selectedRowInComponent(0), forKey: "r")
+            prefs.set(self.relationshippicker.selectedRow(inComponent: 0), forKey: "r")
         }
-        if(p9 != self.religionpicker.selectedRowInComponent(0)){
-            retstring += "&p9=\(self.religionpicker.selectedRowInComponent(0))"
+        if(p9 != self.religionpicker.selectedRow(inComponent: 0)){
+            retstring += "&p9=\(self.religionpicker.selectedRow(inComponent: 0))"
             count += 1
-            prefs.setInteger(self.religionpicker.selectedRowInComponent(0), forKey: "rel")
+            prefs.set(self.religionpicker.selectedRow(inComponent: 0), forKey: "rel")
         }
 
         return retstring
     }
     
-    func query_binfo(postp:String){
-        let OKAction = UIAlertAction(title: "OK", style: .Default) { (action) in
+    func query_binfo(_ postp:String){
+        let OKAction = UIAlertAction(title: "OK", style: .default) { (action) in
             
         }
 
@@ -246,39 +246,39 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
         NSLog("PostData: %@",post);
         print(post)
 
-        let url:NSURL = NSURL(string: base+uinfo)!
+        let url:URL = URL(string: base+uinfo)!
         
-        let postData:NSData = post.dataUsingEncoding(NSASCIIStringEncoding)!
+        let postData:Data = post.data(using: String.Encoding.ascii.rawValue)!
         
-        let postLength:NSString = String( postData.length )
+        let postLength:NSString = String( postData.count ) as NSString
         
-        let request:NSMutableURLRequest = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.HTTPBody = postData
+        let request:NSMutableURLRequest = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = postData
         request.setValue(postLength as String, forHTTPHeaderField: "Content-Length")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         
         
         var reponseError: NSError?
-        var response: NSURLResponse?
+        var response: URLResponse?
         
-        var urlData: NSData?
+        var urlData: Data?
         do {
-            urlData = try NSURLConnection.sendSynchronousRequest(request, returningResponse:&response)
+            urlData = try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning:&response)
         } catch let error as NSError {
             reponseError = error
             urlData = nil
         }
         
         if ( urlData != nil ) {
-            let res = response as! NSHTTPURLResponse!;
+            let res = response as! HTTPURLResponse!;
             
-            NSLog("Response code: %ld", res.statusCode);
+            NSLog("Response code: %ld", res?.statusCode);
             
-            if (res.statusCode >= 200 && res.statusCode < 300)
+            if ((res?.statusCode)! >= 200 && (res?.statusCode)! < 300)
             {
-                let responseData:NSString  = NSString(data:urlData!, encoding:NSUTF8StringEncoding)!
+                let responseData:NSString  = NSString(data:urlData!, encoding:String.Encoding.utf8.rawValue)!
                 
                 NSLog("Response ==> %@", responseData);
                 
@@ -288,7 +288,7 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
                 alertView.title = "Sign in Failed!"
                 alertView.message = "Connection Failed"
                 alertView.addAction(OKAction)
-                self.presentViewController(alertView, animated: true, completion: nil)                }
+                self.present(alertView, animated: true, completion: nil)                }
         }else {
             let alertView:UIAlertController = UIAlertController()
             alertView.title = "Sign in Failed!"
@@ -297,13 +297,13 @@ class VC_UserInfo: UIViewController, UIPickerViewDelegate, UIPickerViewDataSourc
                 alertView.message = (error.localizedDescription)
             }
             alertView.addAction(OKAction)
-            self.presentViewController(alertView, animated: true, completion: nil)
+            self.present(alertView, animated: true, completion: nil)
         }
     }
     
     func populate(){
         if(self.ages.count == 0){
-            for(var i = 1; i < 120; i++){
+            for(i in 1 ..< 120){
                 self.ages.append(i);
             }
         }

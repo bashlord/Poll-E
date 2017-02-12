@@ -12,12 +12,12 @@ class Poll {
     var q:String!
     var id:Int!
     var resp:Int = -1
-    var time:NSDate
-    var rtime:NSDate!
+    var time:Date
+    var rtime:Date!
     var isUna:Bool!
     var index:Int!
     
-    init(q:String, id:Int, d:NSDate){
+    init(q:String, id:Int, d:Date){
         self.q = q
         self.id = id
         self.time = d
